@@ -36,11 +36,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>Objektdiagramm 2.0.png</name>
-			<type>1</type>
-			<location>C:/Users/said/Dropbox/mobile Anwendungen - Jungle Puzzle/Objektdiagramm 2.0.png</location>
-		</link>
-	</linkedResources>
 </projectDescription>
