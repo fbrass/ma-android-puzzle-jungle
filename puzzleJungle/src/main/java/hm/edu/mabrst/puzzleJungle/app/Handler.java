@@ -1,7 +1,11 @@
 package hm.edu.mabrst.puzzleJungle.app;
 
+
+
 public class Handler implements IHandler, IShootHandler {
 
+	
+	
 	@Override
 	public void shoot(int winkel) {
 		// TODO Auto-generated method stub
