@@ -3,17 +3,21 @@ package hm.edu.mabrst.puzzleJungle.app;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * Class for a Bubble
+ * @author said
+ *
+ */
 public class Bubble implements IBubbleShooter, IBubbleHandler {
 
-	// TODO enum noch machen
 	
 	private BubbleColor color;
 	private static int id;
 	private int[] neighbors;
 	private IHandler handler;
-	
 	/**
 	 * Construktor for Bubble
+	 * @param h Handler of the Bubbles
 	 */
 	public Bubble(Handler h){
 		id++;
@@ -26,10 +30,10 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 		this.handler=h;
 		
 	}
-	@Override
+	/**
+	 * Creates Array of same colored neighbors
+	 */
 	public Bubble[] getSameColoredNeighbors() {
-		// TODO Auto-generated method stub
-		// abfrage ob nachbar gleiche farbe hat
 		Bubble[] bubble=new Bubble[6];
 		for (int i=0;i==6;i++){
 			bubble[i]=handler.getBubble(neighbors[i]);
@@ -37,12 +41,28 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 		return bubble;
 	}
 
-	@Override
+	/**
+	 * deletes Bubble out of all neighbors
+	 */
 	public void delete() {
-		// TODO Auto-generated method stub4
-		// löscht bei allen nachbarn diese Kugel
-		
+		for (int i=0;i==6;i++){
+			if(neighbors[i]!=0){
+				Bubble b=handler.getBubble(neighbors[i]);
+				b.deleteNeighbor(id);
+			}
+		}
 	}
+	
+	/**
+	 * deletes one neighbor out of array
+	 * @param id neighbor to delete
+	 */
+	public void deleteNeighbor(int id) {
+		for (int i=0;i==6;i++){
+			if(neighbors[i]==id) neighbors[i]=0;
+		}
+	}
+	
 	/**
 	 * deletes the neighbor out of class
 	 * @param id deleted neighbor
@@ -55,9 +75,13 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 		}
 	}
 
-	@Override
-	public void setNeighbors(int id) {
-		// TODO Auto-generated method stub
+	/**
+	 * Sets Neighbors of the Bubble
+	 * @param id array of the neighbors
+	 */
+	public void setNeighbors(int[] id) {
+		neighbors=id;
+		
 		
 
 	}

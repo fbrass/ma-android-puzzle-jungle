@@ -6,6 +6,7 @@ public interface IBubbleHandler {
 
 	public Bubble[] getSameColoredNeighbors();
 	public void delete();
+	void setNeighbors(int[] id);
 	
 	
 	
