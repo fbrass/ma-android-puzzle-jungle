@@ -36,7 +36,7 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	public Bubble[] getSameColoredNeighbors() {
 		Bubble[] bubble=new Bubble[6];
 		for (int i=0;i==6;i++){
-			bubble[i]=handler.getBubble(neighbors[i]);
+			bubble[i]=getHandler().getBubble(getNeighbors()[i]);
 		}
 		return bubble;
 	}
@@ -46,9 +46,9 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	 */
 	public void delete() {
 		for (int i=0;i==6;i++){
-			if(neighbors[i]!=0){
-				Bubble b=handler.getBubble(neighbors[i]);
-				b.deleteNeighbor(id);
+			if(getNeighbors()[i]!=0){
+				Bubble b=getHandler().getBubble(getNeighbors()[i]);
+				b.deleteNeighbor(getId());
 			}
 		}
 	}
@@ -59,7 +59,7 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	 */
 	public void deleteNeighbor(int id) {
 		for (int i=0;i==6;i++){
-			if(neighbors[i]==id) neighbors[i]=0;
+			if(getNeighbors()[i]==id) getNeighbors()[i]=0;
 		}
 	}
 	
@@ -69,8 +69,8 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	 */
 	public void deletesNeighbor(int id){
 		for(int d=0; d<=6; d++){
-			if(neighbors[d]==id){
-				neighbors[d]=0;
+			if(getNeighbors()[d]==id){
+				getNeighbors()[d]=0;
 			}
 		}
 	}
@@ -84,6 +84,21 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 		
 		
 
+	}
+	public static int getId() {
+		return id;
+	}
+	private static void setId(int id) {
+		Bubble.id = id;
+	}
+	private IHandler getHandler() {
+		return handler;
+	}
+	private void setHandler(IHandler handler) {
+		this.handler = handler;
+	}
+	private int[] getNeighbors() {
+		return neighbors;
 	}
 
 }
