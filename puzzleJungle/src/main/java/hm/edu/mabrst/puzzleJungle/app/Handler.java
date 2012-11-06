@@ -1,10 +1,14 @@
 package hm.edu.mabrst.puzzleJungle.app;
 
+import java.util.HashMap;
+
 
 
 public class Handler implements IHandler, IShootHandler {
 
 	
+	private int[][] coordinates;
+	public HashMap<Integer,Bubble> map;
 	
 	@Override
 	public void shoot(int winkel) {
@@ -14,6 +18,8 @@ public class Handler implements IHandler, IShootHandler {
 
 	@Override
 	public void newGame() {
+		coordinates= new int[40][32];
+		
 		// TODO Auto-generated method stub
 
 	}
