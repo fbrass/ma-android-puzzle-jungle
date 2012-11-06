@@ -4,6 +4,6 @@ import android.view.MotionEvent;
 
 public interface IShootHandler {
 
-	public void shoot (MotionEvent e);
+	public void shoot(MotionEvent e);
 	public void newGame();
 }

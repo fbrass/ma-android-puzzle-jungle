@@ -16,7 +16,7 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	private int[] neighbors;
 	private IHandler handler;
 	/**
-	 * Construktor for Bubble
+	 * Constructor for Bubble
 	 * @param h Handler of the Bubbles
 	 */
 	public Bubble(Handler h){
@@ -32,13 +32,15 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	}
 	/**
 	 * Creates Array of same colored neighbors
+	 * return Array of bubbles
 	 */
 	public Bubble[] getSameColoredNeighbors() {
 		Bubble[] bubble=new Bubble[6];
 		for (int i=0;i==6;i++){
-			bubble[i]=getHandler().getBubble(getNeighbors()[i]);
+			if(getNeighbors()[i]!=0)bubble[i]=getHandler().getBubble(getNeighbors()[i]);
 		}
 		return bubble;
+		// kann sein das nicht funktioniert das der array an ein paar stellen null enthält. (fange das null aber später ab!!!)
 	}
 
 	/**
@@ -49,6 +51,8 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 			if(getNeighbors()[i]!=0){
 				Bubble b=getHandler().getBubble(getNeighbors()[i]);
 				b.deleteNeighbor(getId());
+				// muss enwentuell einen Try-Catch-block enthalten da er sich kugel holen will die bereits gelöscht wurden.
+				//muss noch verkleinert werden in dem "Bubble b" rausgenommen wird und das obrige in der unteren Zeile hinzugefügt wird.
 			}
 		}
 	}
@@ -59,7 +63,12 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	 */
 	public void deleteNeighbor(int id) {
 		for (int i=0;i==6;i++){
-			if(getNeighbors()[i]==id) getNeighbors()[i]=0;
+			if(getNeighbors()[i]==id){
+				int[] d= getNeighbors();
+				d[i]=0;
+				setNeighbors(d);
+				// unschöne Methode...^^
+			}
 		}
 	}
 	
@@ -67,6 +76,7 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	 * deletes the neighbor out of class
 	 * @param id deleted neighbor
 	 */
+	// welchen Sinn hat diese Methode???
 	public void deletesNeighbor(int id){
 		for(int d=0; d<=6; d++){
 			if(getNeighbors()[d]==id){
@@ -99,6 +109,12 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	}
 	private int[] getNeighbors() {
 		return neighbors;
+	}
+	public BubbleColor getColor() {
+		return color;
+	}
+	private void setColor(BubbleColor color) {
+		this.color = color;
 	}
 
 }
