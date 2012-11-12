@@ -176,10 +176,20 @@ public class Handler implements IHandler, IShootHandler {
 		map.remove(b);
 		deleteFromCoordinates(b);
 	}
+	/**
+	 * Deletes a bubble from the coordinates array
+	 * @param b the bubble to delete
+	 */
 	private void deleteFromCoordinates(Bubble b){
-		// löscht Kugel aus dem Koordinaten Array
+		for (int i=0;i<=40;i++){
+			for(int j=0;i<=32;j++){
+				if(b.getId()==coordinates[i][j]) coordinates[i][j]=0;
+			}
+		}
 	}
+	
 	private void checkIsland(){
+		
 		//checkt ob Inseln von Kugeln bestehen
 	}
 	/**
