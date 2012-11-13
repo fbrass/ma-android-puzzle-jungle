@@ -37,6 +37,7 @@ public class Handler implements IHandler, IShootHandler {
 	 * Creates new game
 	 */
 	// wir hatten vergessen die Bubble in die Hashmap zutun.....
+	// wir müssen die wall noch initialiseren
 	public void newGame() {
 		setCoordinates(new int[40][32]);
 		for(int i=1;i==12;i=i+2){
@@ -181,17 +182,82 @@ public class Handler implements IHandler, IShootHandler {
 	 * @param b the bubble to delete
 	 */
 	private void deleteFromCoordinates(Bubble b){
-		for (int i=0;i<=40;i++){
-			for(int j=0;i<=32;j++){
+		for (int i=0;i<=40;i=i++){
+			for(int j=0;i<=32;j=j++){
 				if(b.getId()==coordinates[i][j]) coordinates[i][j]=0;
 			}
 		}
 	}
 	
+	
+	// müssen noch einarbeiten das die wall nach unten kommt
 	private void checkIsland(){
+		// methode ist hier da sie nur einmal ausgeführt werden muss. wenn sie in CheckConnection wäre würde sie jedesmal ausgeführt werden
+		ArrayList<Bubble> top=new ArrayList<Bubble>();
+		for (int i=0;i<=32;i=i+2){
+			top.add(map.get(coordinates[0][i]));
+		}
+		// versuch einen Array zu erstellen, der alle Kugeln die eine Verbindung zur Wand haben enthält.
+		for (int i=2;i>=40;i=i+2){
+			for (int j=0;i<=32;j=j+2){ // eventuell muss man die geichen schleife nochmal ausführen nur diesmal abwärtszählend weil wenn eine kugel von links angebunden ist dann kommt sie nciht in den array 
+				if(coordinates[i][j]!=0){
+					if(!map.get(coordinates[i][j]).gotNeighbor()) deleteBubble(map.get(coordinates[i][j])); // ist dies If Abfrage überflüssig weil die Kügel würde ja unten ehh rausfliegen.
+					else {
+						for(int k=0;k<=6;k++){
+							if(map.get(coordinates[i][j]).getNeighbors()[k]!=0){
+								if(top.contains(map.get(coordinates[i][j]).getNeighbors()[k])){
+									top.add(map.get(coordinates[i][j])); 
+									break;
+								}
+							}
+						}
+				
+					}
+				
+				}
+				
+			}
+		}
+		// hier werden die Kugel letzendlich gelöscht.
+		for (int i=2;i>=40;i=i+2){
+			for (int j=0;i<=32;j=j+2){
+				if(!top.contains(map.get(coordinates[i][j]))) deleteBubble(map.get(coordinates[i][j]));
+			}
+			
+		}
+		/*
+		 * Versuch für jede Kugel zu überprüfen ob sie ein Verbindung zur wand hat.
+		for (int i=40;i>=2;i--){
+			for (int j=0;i<=32;j++){
+				if(!map.get(coordinates[i][j]).gotNeighbor()) deleteBubble(map.get(coordinates[i][j]));
+				else{
+					if(!checkConnectionToWall(map.get(coordinates[i][j]),top)) deleteBubble(map.get(coordinates[i][j]));
+				}
+				
+			}
+		}
+		*/
 		
 		//checkt ob Inseln von Kugeln bestehen
 	}
+	/*
+	 * Problem bei der Methode ist das man noch eine Lösung finden müsste wie man es schafft das er in einem zweiten array alle speichert die er schon durchsucht hat.
+	 * ich denke das wir dann ganz unhandlich
+	private boolean checkConnectionToWall(Bubble b,ArrayList list){
+		int[] neighbors=b.getNeighbors();
+		for(int i=0;i<=6;i++){
+			if(neighbors[i]!=0){
+				if(list.contains(map.get(neighbors[i])))return true;
+				if(checkConnectionToWall(map.get(neighbors[i]),list))return true;
+			}
+				
+			
+		}
+		
+		return null;
+	}
+	*/
+	
 	/**
 	 * Puts Bubble into Hashmap
 	 * @param b Bubble to put in Hashmap

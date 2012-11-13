@@ -109,7 +109,7 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	private void setHandler(IHandler handler) {
 		this.handler = handler;
 	}
-	private int[] getNeighbors() {
+	public int[] getNeighbors() {
 		return neighbors;
 	}
 	public BubbleColor getColor() {
