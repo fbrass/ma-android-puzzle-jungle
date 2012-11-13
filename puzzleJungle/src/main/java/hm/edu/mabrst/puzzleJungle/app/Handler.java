@@ -40,6 +40,7 @@ public class Handler implements IHandler, IShootHandler {
 					Bubble b=new Bubble(this);
 					getCoordinates()[i][j]=b.getId();
 					getCoordinates()[i-1][j]=b.getId();
+					map.put(b.getId(),b);
 				}
 			}
 			else{
@@ -47,6 +48,7 @@ public class Handler implements IHandler, IShootHandler {
 					Bubble b=new Bubble(this);
 					getCoordinates()[i][j]=b.getId();
 					getCoordinates()[i-1][j]=b.getId();
+					map.put(b.getId(),b);
 				}
 			}
 			counter++;
@@ -54,7 +56,7 @@ public class Handler implements IHandler, IShootHandler {
 		}
 
 
-	private int[][] getCoordinates() {
+	public int[][] getCoordinates() {
 		return coordinates;
 	}
 

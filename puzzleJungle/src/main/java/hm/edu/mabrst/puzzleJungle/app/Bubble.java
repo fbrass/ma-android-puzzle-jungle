@@ -11,7 +11,7 @@ import java.util.Random;
 public class Bubble implements IBubbleShooter, IBubbleHandler {
 
 	
-	private BubbleColor color;
+	public BubbleColor color;
 	private static int id;
 	private int[] neighbors;
 	private IHandler handler;
