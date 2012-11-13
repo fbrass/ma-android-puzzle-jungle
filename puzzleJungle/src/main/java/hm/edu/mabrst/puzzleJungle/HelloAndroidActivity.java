@@ -1,8 +1,12 @@
 package hm.edu.mabrst.puzzleJungle;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 public class HelloAndroidActivity extends Activity {
 
@@ -19,7 +23,26 @@ public class HelloAndroidActivity extends Activity {
         super.onCreate(savedInstanceState);
 		Log.i(TAG, "onCreate");
         setContentView(R.layout.main);
+        findViewById(R.id.start).setOnClickListener(new  OnClickListener(){
+        	public void onClick(View arg0){
+        		Intent in = new Intent(HelloAndroidActivity.this,GameActivity.class);
+        		startActivity(in);
+        		
+        	}
+        });
+        findViewById(R.id.highscore).setOnClickListener(new OnClickListener(){
+        	public void onClick(View arg0){
+        		Intent in = new Intent(HelloAndroidActivity.this,HighscoreActivity.class);
+        		startActivity(in);
+        	}
+        });
+        
+        
     }
+    public void startGame(View view){
+    	
+    }
+    
 
 }
 
