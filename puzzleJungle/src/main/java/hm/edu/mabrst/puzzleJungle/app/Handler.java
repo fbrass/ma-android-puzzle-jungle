@@ -109,8 +109,6 @@ public class Handler implements IHandler, IShootHandler {
 	 * @param b new Bubble
 	 */
 	private void colorCheck(Bubble b){
-		BubbleColor bc=b.getColor();
-		// brauchen wir das überhaupt?????
 		ArrayList<Bubble> list=moreColorCheck(getNextSameColoredNeighbors(b.getSameColoredNeighbors()));
 		if(list.size()>3){
 			Iterator<Bubble> it=list.iterator();
