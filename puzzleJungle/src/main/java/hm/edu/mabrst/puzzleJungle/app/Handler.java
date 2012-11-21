@@ -19,6 +19,7 @@ public class Handler implements IHandler, IShootHandler {
 	 */
 	public Handler() {
 		this.shooter = new Shooter(this);
+		this.map = new HashMap<Integer,Bubble>();
 	}
 
 	/**
