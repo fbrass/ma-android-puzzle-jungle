@@ -12,15 +12,15 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 
 	
 	public BubbleColor color;
-	private static int id;
+	private int id;
 	private int[] neighbors;
 	private IHandler handler;
 	/**
 	 * Constructor for Bubble
 	 * @param h Handler of the Bubbles
 	 */
-	public Bubble(Handler h){
-		id++;
+	public Bubble(Handler h,int i){
+		this.id=i;
 		Random r = new Random();
 		int c = r.nextInt(4)+1;
 		if(c==1)this.color = BubbleColor.RED;
@@ -36,7 +36,7 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	 */
 	public Bubble[] getSameColoredNeighbors() {
 		Bubble[] bubble=new Bubble[6];
-		for (int i=0;i==6;i++){
+		for (int i=0;i<6;i++){
 			if(getNeighbors()[i]!=0)bubble[i]=getHandler().getBubble(getNeighbors()[i]);
 		}
 		return bubble;
@@ -103,7 +103,7 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 	public int getId() {
 		return id;
 	}
-	private IHandler getHandler() {
+	public IHandler getHandler() {
 		return handler;
 	}
 	private void setHandler(IHandler handler) {

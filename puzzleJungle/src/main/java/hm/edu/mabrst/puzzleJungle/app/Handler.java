@@ -13,13 +13,14 @@ public class Handler implements IHandler, IShootHandler {
 	private IShooter shooter;
 	private int wall;
 	private Bubble lastAdded;
+	public int idCounter;
 
 	/**
 	 * Constructor for Handler
 	 */
 	public Handler() {
 		this.shooter = new Shooter(this);
-		this.map = new HashMap<Integer,Bubble>();
+		this.map = new HashMap<Integer, Bubble>();
 	}
 
 	/**
@@ -44,11 +45,10 @@ public class Handler implements IHandler, IShootHandler {
 		int counter = 0;
 
 		for (int i = 1; i <= 3 * 2; i += 2) {
-
-			Bubble b = new Bubble(this);
-			map.put(b.getId(), b);
 			if (counter % 2 == 0) {
 				for (int j = 0; j < 16; j += 2) {
+					Bubble b = new Bubble(this,getID());
+					map.put(b.getId(), b);
 					for (int r = 0; r < 2; r++) {
 						for (int c = 0; c < 2; c++) {
 							co[i - r][j + c] = b.getId();
@@ -56,9 +56,10 @@ public class Handler implements IHandler, IShootHandler {
 					}
 
 				}
-			}
-			else{
+			} else {
 				for (int k = 1; k < 15; k += 2) {
+					Bubble b = new Bubble(this,getID());
+					map.put(b.getId(), b);
 					for (int r = 0; r < 2; r++) {
 						for (int c = 0; c < 2; c++) {
 							co[i - r][k + c] = b.getId();
@@ -66,7 +67,36 @@ public class Handler implements IHandler, IShootHandler {
 					}
 				}
 			}
-		counter++;
+			counter++;
+		}
+		// bei jeder Kugel muss noch der Nachbar eingetragen werden.
+		for (int k = 1; k < 10; k += 2) {
+			for (int i = 1; i < 16; i += 2) {
+				if (co[k][i] != 0) {
+					Bubble b = map.get(co[k][i]);
+					int[] ba = new int[6];
+					for (int o = 0; o < 6; o++) {
+						try {
+							if (o == 0)
+								ba[o] = co[k - 2][i];
+							if (o == 1)
+								ba[o] = co[k - 2][i + 2];
+							if (o == 2)
+								ba[o] = co[k][i + 2];
+							if (o == 3)
+								ba[o] = co[k + 2][i + 2];
+							if (o == 4)
+								ba[o] = co[k + 2][i];
+							if (o == 5)
+								ba[o] = co[k][i - 2];
+						} catch (Exception e) {
+							ba[o] = 0;
+						}
+					}
+					b.setNeighbors(ba);
+				}
+			}
+
 		}
 
 		setCoordinates(co);
@@ -114,6 +144,14 @@ public class Handler implements IHandler, IShootHandler {
 	public int getWall() {
 		return wall;
 	}
+	
+	/**
+	 * Returns id for a Bubble
+	 * @return ID for a new Bubble
+	 */
+	public int getID(){
+		return idCounter;
+	}
 
 	/**
 	 * Method for checking if the new Bubble has more than 2 samecolored
@@ -122,7 +160,7 @@ public class Handler implements IHandler, IShootHandler {
 	 * @param b
 	 *            new Bubble
 	 */
-	private void colorCheck(Bubble b) {
+	public void colorCheck(Bubble b) {
 		ArrayList<Bubble> list = moreColorCheck(getNextSameColoredNeighbors(b
 				.getSameColoredNeighbors()));
 		if (list.size() > 3) {
@@ -178,13 +216,21 @@ public class Handler implements IHandler, IShootHandler {
 	 */
 	private ArrayList<Bubble> getNextSameColoredNeighbors(Bubble[] ba) {
 		ArrayList<Bubble> list = new ArrayList<Bubble>();
-		for (int i = 0; i <= ba.length; i++) {
-			for (int j = 0; j <= ba[i].getSameColoredNeighbors().length; j++) {
-				if (ba[i].getSameColoredNeighbors()[j] != null) {
-					if (!list.contains(ba[i].getSameColoredNeighbors()[j]))
-						list.add(ba[i].getSameColoredNeighbors()[j]);
+
+		// System.out.println(ba.length + " vor der Forschleife");
+		for (int i = 1; i < ba.length; i++) {
+			// System.out.println(i + " erste for Schleife");
+			// System.out.println(ba[i]);
+			if (ba[i] != null) {
+				for (int j = 1; j <= ba[i].getSameColoredNeighbors().length; j++) {
+					System.out.println(j);
+					if (ba[i].getSameColoredNeighbors()[j] != null) {
+						if (!list.contains(ba[i].getSameColoredNeighbors()[j]))
+							list.add(ba[i].getSameColoredNeighbors()[j]);
+					}
 				}
 			}
+
 		}
 		return list;
 	}
