@@ -275,73 +275,32 @@ public class Handler implements IHandler, IShootHandler {
 			if (coordinates[0][i] != 0)
 				top.add(coordinates[0][i]);
 		}
-		if (top.isEmpty())
-			System.out.println("top ist leer");
+		
+		
+		//kommt weg sobald abgeschlossen
 		Iterator<Integer> it = top.iterator();
 		String s = "\nListe der CheckIsland top kugeln vor checkIsland ";
 		while (it.hasNext()) {
 			s = s + it.next() + "  ";
 		}
 		System.out.println(s + "\n");
+		
+		top=islandCheck(top);
+
+		
+		
+		
+		//kommt weg sobald Test abgeschlossen
 		s = "";
-		for (int i = 2; i < 20; i += 2) {
-			for (int j = 0; j < 16; j += 2) { // schleife von der anderen
-												// seite??
-				Bubble checkBubble=map.get(coordinates[i][j]);
-				if (checkBubble != null) {
-					//System.out.println("Kugel die gecheckt wird : "+ checkBubble.getId());  
-					for (int k = 0; k < 6; k++) {
-						//System.out.println("nachbar nummer " + k + " : "+ checkBubble.getNeighbors()[k]);
-						if (checkBubble.getNeighbors()[k] != 0) {
-								if (top.contains(checkBubble.getNeighbors()[k])) {
-									top.add(checkBubble.getId());
-									//System.out.println(checkBubble.getId() +" kugel wird hinzugefügt");
-									k=6;
-								}
-							}
-					}
-
-					it = top.iterator();
-					s = "\nListe der CheckIsland top kugeln ";
-					while (it.hasNext()) {
-						s = s + it.next() + "  ";
-					}
-					//System.out.println(s + "\n");
-				}
-
-			}
-			for(int j=15;j>=0;j-=2){
-				if(map.get(getCoordinates()[i][j])!=null){
-					//System.out.println("Kugel die gecheckt wird : " + map.get(getCoordinates()[i][j]).getId());
-					for (int k=0;k<6;k++){
-						//System.out.println("Nachbar Nummer " + k + " : "+map.get(coordinates[i][j]).getNeighbors()[k]);
-						if(map.get(coordinates[i][j]).getNeighbors()[k]!=0){
-							if(top.contains(map.get(coordinates[i][j]).getNeighbors()[k])){
-								top.add(map.get(coordinates[i][j]).getId());
-								//System.out.println(map.get(coordinates[i][j]) + " Kugel wird hinzugefügt");
-								k=6;
-							}
-							
-						}
-					}
-
-					it = top.iterator();
-					s = "\nListe der CheckIsland top kugeln ";
-					while (it.hasNext()) {
-						s = s + it.next() + "  ";
-					}
-					//System.out.println(s + "\n");
-				}
-			}
-
-		}
 		it = top.iterator();
 		s = "\nListe der CheckIsland top kugeln danach ";
 		while (it.hasNext()) {
 			s = s + it.next() + "  ";
 		}
 		System.out.println(s + "\n");
-		// hier werden die Kugel letzendlich gelöscht.
+
+
+		
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 16; j++) {
 				if (!top.contains(coordinates[i][j])&&map.containsKey(coordinates[i][j])) {
@@ -349,6 +308,79 @@ public class Handler implements IHandler, IShootHandler {
 				}
 			}
 
+		}
+		
+	}
+	
+	private ArrayList<Integer> islandCheck(ArrayList<Integer> top){
+		ArrayList<Integer> newTop=recursiveIslandCheck(top);
+		ArrayList<Integer> checkTop=recursiveIslandCheck(newTop);
+		if(!newTop.equals(checkTop)) top=islandCheck(checkTop);
+		else top=newTop;
+		return top;
+		
+		
+
+				
+	}
+	
+	
+	
+		private ArrayList<Integer> recursiveIslandCheck(ArrayList<Integer> top){
+
+			String s="";
+			Iterator<Integer> it=top.iterator();
+			
+			for (int i = 2; i < 20; i += 2) {
+				for (int j = 0; j < 16; j += 2) {
+					if (map.get(coordinates[i][j]) != null) {
+						//System.out.println("Kugel die gecheckt wird : "+ checkBubble.getId());  
+						for (int k = 0; k < 6; k++) {
+							//System.out.println("nachbar nummer " + k + " : "+ checkBubble.getNeighbors()[k]);
+							if (map.get(coordinates[i][j]).getNeighbors()[k] != 0) {
+									if (top.contains(map.get(coordinates[i][j]).getNeighbors()[k])) {
+										top.add(map.get(coordinates[i][j]).getId());
+										//System.out.println(checkBubble.getId() +" kugel wird hinzugefügt");
+										k=6;
+									}
+								}
+						}
+
+						it = top.iterator();
+						s = "\nListe der CheckIsland top kugeln ";
+						while (it.hasNext()) {
+							s = s + it.next() + "  ";
+						}
+						//System.out.println(s + "\n");
+					}
+
+				}
+				for(int j=15;j>=0;j-=2){
+					if(map.get(getCoordinates()[i][j])!=null){
+						//System.out.println("Kugel die gecheckt wird : " + map.get(getCoordinates()[i][j]).getId());
+						for (int k=0;k<6;k++){
+							//System.out.println("Nachbar Nummer " + k + " : "+map.get(coordinates[i][j]).getNeighbors()[k]);
+							if(map.get(coordinates[i][j]).getNeighbors()[k]!=0){
+								if(top.contains(map.get(coordinates[i][j]).getNeighbors()[k])){
+									top.add(map.get(coordinates[i][j]).getId());
+									//System.out.println(map.get(coordinates[i][j]) + " Kugel wird hinzugefügt");
+									k=6;
+								}
+								
+							}
+						}
+
+						it = top.iterator();
+						s = "\nListe der CheckIsland top kugeln ";
+						while (it.hasNext()) {
+							s = s + it.next() + "  ";
+						}
+						//System.out.println(s + "\n");
+					}
+				}
+
+			}
+			return top;
 		}
 		/*
 		 * Versuch für jede Kugel zu überprüfen ob sie ein Verbindung zur wand
@@ -362,7 +394,7 @@ public class Handler implements IHandler, IShootHandler {
 		 */
 
 		// checkt ob Inseln von Kugeln bestehen
-	}
+	
 
 	/*
 	 * Problem bei der Methode ist das man noch eine Lösung finden müsste wie
