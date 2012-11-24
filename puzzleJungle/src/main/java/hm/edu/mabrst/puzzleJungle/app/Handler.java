@@ -3,6 +3,7 @@ package hm.edu.mabrst.puzzleJungle.app;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import android.view.MotionEvent;
 
@@ -79,15 +80,15 @@ public class Handler implements IHandler, IShootHandler {
 					for (int o = 0; o < 6; o++) {
 						try {
 							if (o == 0)
-								ba[o] = co[k - 2][i];
+								ba[o] = co[k - 2][i-1];
 							if (o == 1)
-								ba[o] = co[k - 2][i + 2];
+								ba[o] = co[k - 2][i +1];
 							if (o == 2)
 								ba[o] = co[k][i + 2];
 							if (o == 3)
-								ba[o] = co[k + 2][i + 2];
+								ba[o] = co[k + 2][i + 1];
 							if (o == 4)
-								ba[o] = co[k + 2][i];
+								ba[o] = co[k + 2][i-1];
 							if (o == 5)
 								ba[o] = co[k][i - 2];
 						} catch (Exception e) {
@@ -155,12 +156,12 @@ public class Handler implements IHandler, IShootHandler {
 	public void colorCheck(Bubble b) {
 		ArrayList<Bubble> list = moreColorCheck(getNextSameColoredNeighbors(
 				b.getSameColoredNeighbors(), b));
-		Iterator<Bubble> it2=list.iterator();
-		String s="List der gelöschten Kugeln: ";
-		while(it2.hasNext()){
-			s=s+it2.next().getId() + " ";
+		Iterator<Bubble> it2 = list.iterator();
+		String s = "List der gelöschten Kugeln: ";
+		while (it2.hasNext()) {
+			s = s + it2.next().getId() + " ";
 		}
-		System.out.println(s +"\n");
+		System.out.println(s + "\n");
 		if (list.size() > 2) {
 			Iterator<Bubble> it = list.iterator();
 			while (it.hasNext()) {
@@ -168,6 +169,7 @@ public class Handler implements IHandler, IShootHandler {
 			}
 			if (map.containsKey(b.getId()))
 				deleteBubble(b);
+			showCoordinates(this);
 			checkIsland();
 		}
 
@@ -219,8 +221,7 @@ public class Handler implements IHandler, IShootHandler {
 		ArrayList<Bubble> list = new ArrayList<Bubble>();
 		for (int i = 0; i < 6; i++) {
 			if (ba[i] != null) {
-				if (!list.contains(ba[i])) {
-					list.add(ba[i]);
+				if (!list.contains(ba[i])) list.add(ba[i]);
 					for (int j = 0; j < 6; j++) {
 						if (ba[i].getSameColoredNeighbors()[j] != null
 								&& ba[i].getSameColoredNeighbors()[j].color
@@ -229,7 +230,7 @@ public class Handler implements IHandler, IShootHandler {
 									.contains(ba[i].getSameColoredNeighbors()[j]))
 								list.add(ba[i].getSameColoredNeighbors()[j]);
 						}
-					}
+					
 				}
 			}
 		}
@@ -246,14 +247,6 @@ public class Handler implements IHandler, IShootHandler {
 	public void deleteBubble(Bubble b) {
 		b.delete();
 		map.remove(b);
-		try{
-			Thread.sleep(500);
-			map.get(b.getId());
-			
-			System.out.println("löschen geht nicht");
-		} catch(Exception e){
-			System.out.println(e.getMessage());
-		}
 		deleteFromCoordinates(b);
 	}
 
@@ -277,73 +270,81 @@ public class Handler implements IHandler, IShootHandler {
 
 	// müssen noch einarbeiten das die wall nach unten kommt
 	private void checkIsland() {
-		ArrayList<Bubble> top = new ArrayList<Bubble>();
+		ArrayList<Integer> top = new ArrayList<Integer>();
 		for (int i = 0; i < 16; i += 2) {
 			if (coordinates[0][i] != 0)
-				top.add(map.get(coordinates[0][i]));
+				top.add(coordinates[0][i]);
 		}
 		if (top.isEmpty())
 			System.out.println("top ist leer");
-		Iterator<Bubble> it = top.iterator();
-		String s = "\nListe der CheckIsland top kugeln";
+		Iterator<Integer> it = top.iterator();
+		String s = "\nListe der CheckIsland top kugeln vor checkIsland ";
 		while (it.hasNext()) {
-			s = s + it.next().getId() + "  ";
+			s = s + it.next() + "  ";
 		}
 		System.out.println(s + "\n");
-		if (s == null)
-			System.out.println("string ist null");
-
-		// versuch einen Array zu erstellen, der alle Kugeln die eine Verbindung
-		// zur Wand haben enthält.
-		int counter = 0;
 		s = "";
 		for (int i = 2; i < 20; i += 2) {
 			for (int j = 0; j < 16; j += 2) { // schleife von der anderen
 												// seite??
-				if (map.get(coordinates[i][j]) != null) {
-					System.out.println("Kugel die gecheckt wird : " + coordinates[i][j]);
+				Bubble checkBubble=map.get(coordinates[i][j]);
+				if (checkBubble != null) {
+					//System.out.println("Kugel die gecheckt wird : "+ checkBubble.getId());  
 					for (int k = 0; k < 6; k++) {
-						if (map.get(getCoordinates()[i][j]).getNeighbors()[k] != 0
-								&& map.get(map.get(getCoordinates()[i][j])
-										.getNeighbors()[k]) != null) {
-							System.out.println("nachbar nummer " +k + " : "+map.get(coordinates[i][j]).getNeighbors()[k]);
-							if (top.contains(map.get(map.get(
-									getCoordinates()[i][j]).getNeighbors()[k]))
-									&& !top.contains(map.get(coordinates[i][j]))) {
-								top.add(map.get(coordinates[i][j]));
-								try {
-									s = s + " die id: " + coordinates[i][j]
-											+ " alle nachbarn: ";
-									for (int u = 0; i < 6; i++) {
-										s = s
-												+ map.get(coordinates[i][j])
-														.getNeighbors()[u]
-												+ ", ";
-									}
-									s = s + " \n";
-								} catch (Exception e) {
-									System.out.println("fehler");
+						//System.out.println("nachbar nummer " + k + " : "+ checkBubble.getNeighbors()[k]);
+						if (checkBubble.getNeighbors()[k] != 0) {
+								if (top.contains(checkBubble.getNeighbors()[k])) {
+									top.add(checkBubble.getId());
+									//System.out.println(checkBubble.getId() +" kugel wird hinzugefügt");
+									k=6;
 								}
 							}
-						}
 					}
+
+					it = top.iterator();
+					s = "\nListe der CheckIsland top kugeln ";
+					while (it.hasNext()) {
+						s = s + it.next() + "  ";
+					}
+					//System.out.println(s + "\n");
 				}
 
 			}
+			for(int j=15;j>=0;j-=2){
+				if(map.get(getCoordinates()[i][j])!=null){
+					//System.out.println("Kugel die gecheckt wird : " + map.get(getCoordinates()[i][j]).getId());
+					for (int k=0;k<6;k++){
+						//System.out.println("Nachbar Nummer " + k + " : "+map.get(coordinates[i][j]).getNeighbors()[k]);
+						if(map.get(coordinates[i][j]).getNeighbors()[k]!=0){
+							if(top.contains(map.get(coordinates[i][j]).getNeighbors()[k])){
+								top.add(map.get(coordinates[i][j]).getId());
+								//System.out.println(map.get(coordinates[i][j]) + " Kugel wird hinzugefügt");
+								k=6;
+							}
+							
+						}
+					}
+
+					it = top.iterator();
+					s = "\nListe der CheckIsland top kugeln ";
+					while (it.hasNext()) {
+						s = s + it.next() + "  ";
+					}
+					//System.out.println(s + "\n");
+				}
+			}
 
 		}
-		System.out.println(s);
 		it = top.iterator();
-		s = "\nListe der CheckIsland top kugeln";
+		s = "\nListe der CheckIsland top kugeln danach ";
 		while (it.hasNext()) {
-			s = s + it.next().getId() + "  ";
+			s = s + it.next() + "  ";
 		}
 		System.out.println(s + "\n");
 		// hier werden die Kugel letzendlich gelöscht.
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 16; j++) {
-				if (!top.contains(map.get(coordinates[i][j]))
-						&& map.containsKey(coordinates[i][j])) {
+				if (!top.contains(coordinates[i][j])&&map.containsKey(coordinates[i][j])) {
 					deleteBubble(map.get(coordinates[i][j]));
 				}
 			}
@@ -389,5 +390,18 @@ public class Handler implements IHandler, IShootHandler {
 		lastAdded = b;
 		map.put(b.getId(), b);
 
+	}
+	public static void showCoordinates(Handler h) {
+		String s = "";
+		for (int j = 0; j < 10; j++) {
+			for (int i = 0; i < 16; i++) {
+				if (h.getCoordinates()[j][i] == 0)
+					s = s + "0 |";
+				else
+					s = s + h.getCoordinates()[j][i] + "|";
+			}
+			s = s + "\n";
+		}
+		System.out.println(s);
 	}
 }
