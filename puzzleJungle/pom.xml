@@ -20,10 +20,17 @@
             <version>${platform.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
@@ -42,13 +49,18 @@
             </plugin>
 
             <plugin>
+                <inherited>true</inherited>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                    <optimize>true</optimize>
+                    <debug>true</debug>
                 </configuration>
-            </plugin>
+			</plugin>
+			
         </plugins>
     </build>
 </project>

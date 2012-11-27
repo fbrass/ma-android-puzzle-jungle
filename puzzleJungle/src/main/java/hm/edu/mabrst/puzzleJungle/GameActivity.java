@@ -24,7 +24,7 @@ public class GameActivity extends Activity {
         tv.setText("Game Created");
         image11= (ImageView) findViewById(R.id.imageView11);
         /*
-        Bubble b = handler.map.get(handler.getCoordinates()[1][1]);
+        Bubble b = handler.getMap().get(handler.getCoordinates()[1][1]);
         /*
         if(b.color==BubbleColor.BLUE) tv.setText("blau");
         if(b.color==BubbleColor.YELLOW) tv.setText("gelb"); 
