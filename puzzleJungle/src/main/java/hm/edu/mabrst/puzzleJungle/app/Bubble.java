@@ -96,17 +96,6 @@ public class Bubble implements IBubbleShooter, IBubbleHandler {
 		neighbors = id;
 	}
 
-	public boolean gotNeighbor() {
-		int i = 0;
-		for (int d = 0; d < 6; d++) {
-			i = i + getNeighbors()[d];
-		}
-		if (i > 0)
-			return true;
-		else
-			return false;
-	}
-
 	public int getId() {
 		return id;
 	}
