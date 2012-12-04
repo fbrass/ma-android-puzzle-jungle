@@ -15,6 +15,8 @@ public class Handler implements IHandler, IShootHandler {
 	private int wall;
 	private Bubble lastAdded;
 	public int idCounter;
+	private Bubble nextOne;
+	private Bubble nextNextOne;
 
 	/**
 	 * Constructor for Handler
@@ -33,7 +35,16 @@ public class Handler implements IHandler, IShootHandler {
 	 *            Motion Event of the shoot on the Touch Screen
 	 */
 	public void shoot(MotionEvent e) {
-		coordinates = getShooter().shoot(getCoordinates(), e);
+		try{
+		coordinates = getShooter().shoot(getCoordinates(), e,nextOne);
+		} catch(Exception ex){
+			System.out.println("Shoot geht nicht");
+		}
+		lastAdded=nextOne;
+		nextOne=nextNextOne;
+		idCounter++;
+		nextNextOne=new Bubble(this,idCounter);
+		map.put(nextNextOne.getId(), nextNextOne);
 		colorCheck(lastAdded);
 	}
 
@@ -46,7 +57,7 @@ public class Handler implements IHandler, IShootHandler {
 		int[][] co = new int[20][16];
 		int counter = 0;
 
-		for (int i = 1; i <= 3 * 2; i += 2) {
+		for (int i = 1; i <= 5*2; i += 2) {
 			if (counter % 2 == 0) {
 				for (int j = 0; j < 16; j += 2) {
 					Bubble b = new Bubble(this, getID());
@@ -101,6 +112,12 @@ public class Handler implements IHandler, IShootHandler {
 
 		}
 
+		idCounter++;
+		nextOne=new Bubble(this,idCounter);
+		map.put(nextOne.getId(), nextOne);
+		idCounter++;
+		nextNextOne=new Bubble(this,idCounter);
+		map.put(nextNextOne.getId(), nextNextOne);
 		setCoordinates(co);
 	}
 

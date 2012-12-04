@@ -16,7 +16,7 @@ public class Shooter implements IShooter {
 	}
 	
 	@Override
-	public int[][] shoot(int[][] koordinates, MotionEvent e) {
+	public int[][] shoot(int[][] koordinates, MotionEvent e,Bubble b) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -7,7 +7,7 @@
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
-        <activity android:name=".HelloAndroidActivity" >
+        <activity android:name="hm.edu.mabrst.puzzleJungle.HelloAndroidActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -15,7 +15,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".GameActivity"
+            android:name="hm.edu.mabrst.puzzleJungle.GameActivity"
             android:label="@string/title_activity_game" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,13 +24,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HighscoreActivity"
+            android:name="hm.edu.mabrst.puzzleJungle.HighscoreActivity"
             android:label="@string/title_activity_highscore" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="hm.edu.mabrst.puzzleJungle.ShootActivity"
+            android:label="@string/title_activity_shoot" >
         </activity>
     </application>
 

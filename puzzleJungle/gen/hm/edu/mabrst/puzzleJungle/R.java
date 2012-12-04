@@ -27,11 +27,13 @@ public final class R {
     public static final class layout {
         public static final int activity_game=0x7f030000;
         public static final int activity_highscore=0x7f030001;
-        public static final int main=0x7f030002;
+        public static final int activity_shoot=0x7f030002;
+        public static final int main=0x7f030003;
     }
     public static final class menu {
         public static final int activity_game=0x7f050000;
         public static final int activity_highscore=0x7f050001;
+        public static final int activity_shoot=0x7f050002;
     }
     public static final class string {
         public static final int app_name=0x7f040001;
@@ -42,5 +44,6 @@ public final class R {
         public static final int start=0x7f040002;
         public static final int title_activity_game=0x7f040006;
         public static final int title_activity_highscore=0x7f040007;
+        public static final int title_activity_shoot=0x7f040008;
     }
 }
